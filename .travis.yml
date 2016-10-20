@@ -17,10 +17,11 @@ cache:
     - vendor
 
 before_install:
+  - phpenv config-rm xdebug.ini
   - composer self-update
 
 install:
   - composer install -o --prefer-dist --no-interaction
 
 script:
-  - composer test
+  - composer --version
