@@ -50,13 +50,25 @@ fi
 read -p "Database tables' prefix (\$table_prefix): " TABLE_PREFIX
 
 # Get MySQL server address.
-read -p "MySQL server address (DB_HOST): " DB_HOST
+read -p "MySQL server address: " DB_HOST
+if [ -z "$DB_HOST" ]
+then
+  DB_HOST="127.0.0.1"
+fi
 
 # Get MySQL client address.
-read -p "MySQL client address (IP|hostname of DB_USER): " USER_HOST
+read -p "MySQL client address: " USER_HOST
+if [ -z "$USER_HOST" ]
+then
+  USER_HOST="127.0.0.1"
+fi
 
 # Get MySQL server superior user.
 read -p "MySQL server superior username. E.g. root: " MYSQL_USER
+if [ -z "$MYSQL_USER" ]
+then
+  MYSQL_USER="root"
+fi
 
 # Create database.
 echo "Connecting to the MySQL server..."
@@ -109,7 +121,7 @@ DOMAIN_NAME=$(echo $WP_HOME | awk -F/ '{print $3}')
 
 # Cat settings to config file.
 echo "Generating config file..."
-if cat > config/$DOMAIN_NAME.php << SETTINGS
+if cat > config/$DOMAIN_NAME.php <<SETTINGS
 <?php
 /**
  * Site settings
