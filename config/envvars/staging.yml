@@ -1,0 +1,10 @@
+disabled_commands:
+  - eval
+  - shell
+  - theme install
+  - plugin install
+
+# Alias to staging site.
+# @stag:
+# 	ssh: user@staging.example.com
+#	  path: /var/www/public/wordpress

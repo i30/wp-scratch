@@ -1,0 +1,12 @@
+disabled_commands:
+  - eval
+  - shell
+  - server
+  - db drop
+  - theme install
+  - plugin install
+
+# Alias to production site.
+# @prod:
+# 	ssh: user@example.com
+#	  path: /var/www/public/wordpress

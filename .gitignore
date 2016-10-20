@@ -1,0 +1,13 @@
+*.log
+cache
+vendor
+.vagrant
+.DS_Store
+public/*
+node_modules
+config/*.php
+composer.lock
+!public/robots.txt
+!public/index.php
+!public/wp-config.php
+

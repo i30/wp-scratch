@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /cache
+Disallow: /upgrade
+Disallow: /debug.log
+Disallow: /languages

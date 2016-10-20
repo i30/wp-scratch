@@ -1,0 +1,263 @@
+#!/bin/bash
+#
+# This simple script is to help you get started quickly.
+#
+
+# Update dependencies.
+read -p "Do you want to update dependencies? [y/n]" UPDATE_DEPPENDENCIES
+
+if [ "y" = "$UPDATE_DEPPENDENCIES" ]
+then
+  composer update -o --prefer-dist
+fi
+
+# Remove wp-content directory.
+if [ -d "public/wordpress/wp-content" ]
+then
+  rm -rf public/wordpress/wp-content
+fi
+
+# Ready! Start installation.
+echo "Starting WordPress installation..."
+
+# Get server name.
+read -p "Server Name: " SERVER_NAME
+
+# Get database name.
+read -p "Database name (DB_NAME): " DB_NAME
+
+# Get database username.
+read -p "Database username (DB_USER): " DB_USER
+
+# Get database password.
+read -s -p "Database password (DB_PASSWORD): " DB_PASSWORD
+
+# Get database charset.
+echo ""; read -p "Database charset (DB_CHARSET): " DB_CHARSET
+if [ -z "$DB_CHARSET" ]
+then
+  DB_CHARSET="utf8mb4"
+fi
+
+# Get database collation.
+read -p "Database collation (DB_COLLATE): " DB_COLLATE
+if [ -z "$DB_COLLATE" ]
+then
+  DB_COLLATE="utf8mb4_general_ci"
+fi
+
+# Get database tables' prefix.
+read -p "Database tables' prefix (\$table_prefix): " TABLE_PREFIX
+
+# Get MySQL server address.
+read -p "MySQL server address (DB_HOST): " DB_HOST
+
+# Get MySQL client address.
+read -p "MySQL client address (IP|hostname of DB_USER): " USER_HOST
+
+# Get MySQL server superior user.
+read -p "MySQL server superior username. E.g. root: " MYSQL_USER
+
+# Create database.
+echo "Connecting to the MySQL server..."
+mysql -h $DB_HOST -u $MYSQL_USER -p << SHELL
+  create user '$DB_USER'@'$USER_HOST' identified by '$DB_PASSWORD';
+  create database if not exists $DB_NAME;
+  grant alter,create,delete,drop,index,lock tables,insert,select,update on $DB_NAME.* to '$DB_USER'@'$USER_HOST';
+  flush privileges;
+  quit
+SHELL
+
+# If there's MySQL failure.
+if [ $? -eq 1 ]
+then
+  exit 1
+fi
+
+# Database created.
+echo -e "\033[32mSuccess\033[0m: database has been created successfully!"
+
+# Get secret keys and salts.
+echo "Generating secret keys and salts..."
+SALTS=$(curl -s -S https://api.wordpress.org/secret-key/1.1/salt/)
+
+# Get environment.
+echo "Which environment will be used? [1/2/3]"
+echo "1 - Staging"
+echo "2 - Production"
+echo "3 - Development"
+read OPTION
+case $OPTION in
+  1) APP_ENV='staging';;
+  2) APP_ENV='production';;
+  3|*) APP_ENV='development';;
+esac
+
+# Inherit environment configurations.
+if sed -i -E "s%^inherit:.*%inherit: config/envvars/$APP_ENV.yml%g" wp-cli.yml
+then
+  echo -e "\033[32mSuccess\033[0m: $APP_ENV environment has been set successfully!"
+  rm -f wp-cli.yml-E
+else
+  echo -e "\033[33mNotice\033[0m: failed to set up environment!"
+fi
+
+# Get domain name and home url.
+read -p "Homepage URL (WP_HOME): " HOME_URL
+WP_HOME=${HOME_URL%/}
+DOMAIN_NAME=$(echo $WP_HOME | awk -F/ '{print $3}')
+
+# Cat settings to config file.
+echo "Generating config file..."
+if cat > config/$DOMAIN_NAME.php << SETTINGS
+<?php
+/**
+ * Site settings
+ *
+ * @see  public/wp-config.php  Bootstrap file. DRY!
+ */
+
+/**
+ * Database table prefix
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#table_prefix
+ */
+\$table_prefix = '$TABLE_PREFIX';
+
+/**
+ * Homepage URL
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#Blog_address_.28URL.29
+ *
+ * @var  string
+ */
+define('WP_HOME', '$WP_HOME');
+
+/**
+ * Database host
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#Set_Database_Host
+ *
+ * @var  string
+ */
+define('DB_HOST', '$DB_HOST');
+
+/**
+ * Database username
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#Set_Database_User
+ *
+ * @var  string
+ */
+define('DB_USER', '$DB_USER');
+
+/**
+ * Database name
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#Set_Database_Name
+ *
+ * @var  string
+ */
+define('DB_NAME', '$DB_NAME');
+
+/**
+ * Database charset
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#Database_character_set
+ *
+ * @var  string
+ */
+define('DB_CHARSET', '$DB_CHARSET');
+
+/**
+ * Database collate
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#Database_collation
+ *
+ * @var  string
+ */
+define('DB_COLLATE', '$DB_COLLATE');
+
+/**
+ * Database password
+ *
+ * @see  https://codex.wordpress.org/Editing_wp-config.php#Set_Database_Password
+ *
+ * @var  string
+ */
+define('DB_PASSWORD', '$DB_PASSWORD');
+
+/**
+ * Secret keys and salts
+ *
+ * @link  https://api.wordpress.org/secret-key/1.1/salt/
+ *
+ * @var  string
+ */
+$SALTS
+
+/**
+ * Load environment.
+ *
+ * @var  resource
+ */
+require APP_ROOT . 'config/envvars/$APP_ENV.php';
+SETTINGS
+then
+  echo -e "\033[32mSuccess\033[0m: config file has been created successfully!"
+else
+  echo -e "\033[31mError\033[0m: failed to create config file. Please make sure that config folder is writable!"
+  exit 1
+fi
+
+# Get site title.
+read -p "Site title: " SITE_TITLE
+
+# Get admin username.
+read -p "Admin username: " ADMIN_USERNAME
+
+# Get admin pwssword.
+read -s -p "Admin password: " ADMIN_PWD
+
+# Get admin email address.
+echo ""; read -p "Admin email: " ADMIN_EMAIL
+
+# Do installation.
+if ! type "wp" >> /dev/null
+then
+  echo -e "\033[31mError\033[0m: wp-cli is not available. Please install wp-cli!"
+  exit 1
+else
+  wp core install --title="$SITE_TITLE" --admin_user="$ADMIN_USERNAME" --admin_password="$ADMIN_PWD" --admin_email="$ADMIN_EMAIL" --url="$WP_HOME" --skip-email
+fi
+
+# If failed to install WordPress.
+if [ $? -ge 1 ]
+then
+  exit 1
+fi
+
+# Switch --url
+if sed -i -E "s%^url:.*%url: $DOMAIN_NAME%g" wp-cli.yml
+then
+  echo -e "\033[32mSuccess\033[0m: switched to $DOMAIN_NAME"
+  rm -f wp-cli.yml-E
+else
+  echo -e "\033[33mNotice\033[0m: failed to switch to $DOMAIN_NAME"
+fi
+
+# Correct MySQL privileges after WordPress installed.
+echo -e "\033[33mNotice\033[0m: ALTER and DROP were granted for $DB_USER@$USER_HOST."
+read -p "Do you want to revoke those MySQL privileges now? [y/n]" REVOKE_OR_NOT
+if [ "y" = "$REVOKE_OR_NOT" ]
+then
+echo "Connecting to the MySQL server again..."
+mysql -h $DB_HOST -u $MYSQL_USER -p << SHELL
+  revoke alter,drop on $DB_NAME.* from '$DB_USER'@'$USER_HOST';
+  flush privileges;
+  quit
+SHELL
+fi
+
+# Done!
+echo -e "\033[32mDone!\033[0m You can now access admin dashboard at $WP_HOME/wordpress/wp-admin"

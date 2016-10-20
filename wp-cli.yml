@@ -1,0 +1,8 @@
+# --path
+path: public/wordpress
+
+# --url
+url: clever.dev
+
+# --inherit
+inherit: config/envvars/development.yml
