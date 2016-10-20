@@ -1,5 +1,9 @@
 # WordPress Scratch
 
+[![Latest Stable Version](https://poser.pugx.org/i30/wp-scratch/v/stable)](https://packagist.org/packages/i30/wp-scratch)
+[![Latest Unstable Version](https://poser.pugx.org/i30/wp-scratch/v/unstable)](https://packagist.org/packages/i30/wp-scratch)
+[![License](https://poser.pugx.org/i30/wp-scratch/license)](https://packagist.org/packages/i30/wp-scratch)
+
 A  WordPress project from scratch.
 
 ## Requirements
