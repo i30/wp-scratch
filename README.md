@@ -37,7 +37,7 @@ A  WordPress project from scratch.
    * Plugin Name: Custom Uploads Directory
    * Version:     1.0.0
    * Description: Create custom uploads directory base on the DB_NAME constant.
-   * Author:      i30
+   * Author:      Dang Vu
    * AUthor URI:  https://i30.github.io
    * License:     GPL v3+
    */
