@@ -2,7 +2,7 @@
 path: public/wordpress
 
 # --url
-url: clever.dev
+url: example.com
 
 # --inherit
 inherit: config/envvars/development.yml
