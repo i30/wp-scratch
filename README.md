@@ -5,7 +5,13 @@
 [![Latest Unstable Version](https://poser.pugx.org/i30/wp-scratch/v/unstable)](https://packagist.org/packages/i30/wp-scratch)
 [![License](https://poser.pugx.org/i30/wp-scratch/license)](https://packagist.org/packages/i30/wp-scratch)
 
-A  WordPress project from scratch.
+A WordPress project from scratch.
+
+While working with WordPress, I feel unease to config virtual hosts, config a brand new WordPress installation, copy essential plugins for each new project again and again.
+
+I also don't like to maintain a WordPress multisite site. If you want a [highly available](https://en.wikipedia.org/wiki/High_availability) WordPress app. This project might help.
+
+Basically, you can separate static contents, databases, back-end and front-end into smaller servers. All of them use a same WordPress installation, this is really helpful in term of caching and maintaining. You can move your servers around or set up load balancing easily.
 
 ## Requirements
 
@@ -16,7 +22,7 @@ A  WordPress project from scratch.
 
 ## Installation
 
-1. Prepare your server server block for [Nginx][5] or virtual host for [Apache][6]. You do not need to create MySQL database, it will be created while installing WordPress.
+1. Prepare your server block for [Nginx][5] or virtual host for [Apache][6]. You do not need to create MySQL database, it will be created while installing WordPress.
 
 2. Run these two commands on your command line respectively:
 
@@ -26,6 +32,8 @@ A  WordPress project from scratch.
   ```
 
 3. Follow instructions to finish the installation. It's easy!
+
+From now on, to add a new WordPress app, you just need fire the `install` script again.
 
 ## Important Notes
 
@@ -38,7 +46,7 @@ A  WordPress project from scratch.
    * Plugin Name: Custom Uploads Directory
    * Version:     1.0.0
    * Description: Create custom uploads directory base on the DB_NAME constant.
-   * Author:      Dang Vu
+   * Author:      i30
    * AUthor URI:  https://i30.github.io
    * License:     GPL v3+
    */
@@ -46,8 +54,8 @@ A  WordPress project from scratch.
   {
     $baseurl   = WP_HOME . '/uploads';
     $basedir   = APP_ROOT . 'public/uploads';
-    $customurl = WP_HOME . '/' . DB_NAME . '_uploads';
-    $customdir = APP_ROOT . 'public/' . DB_NAME . '_uploads';
+    $customurl = WP_HOME . '/' . DB_NAME . '-uploads';
+    $customdir = APP_ROOT . 'public/' . DB_NAME . '-uploads';
 
     $args['url']     = str_replace($baseurl, $customurl, $args['url']);
     $args['path']    = str_replace($basedir, $customdir, $args['path']);
