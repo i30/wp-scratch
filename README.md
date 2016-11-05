@@ -9,9 +9,7 @@ A WordPress project from scratch.
 
 While working with WordPress, I feel unease to config virtual hosts, config a brand new WordPress installation, copy essential plugins for each new project again and again.
 
-I also don't like to maintain a WordPress multisite site. If you want a [highly available](https://en.wikipedia.org/wiki/High_availability) WordPress app. This project might help.
-
-Basically, you can separate static contents, databases, back-end and front-end into smaller servers. All of them use a same WordPress installation, this is really helpful in term of caching and maintaining. You can move your servers around or set up load balancing easily.
+Basically, you can separate static contents, databases, back-end and front-end into smaller servers. All of them use a same WordPress installation, this is really helpful in term of performance and maintainability. You can move your servers around or set up load balancing easily.
 
 ## Requirements
 
