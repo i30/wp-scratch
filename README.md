@@ -13,8 +13,8 @@ Basically, you can separate static contents, databases, back-end and front-end i
 
 ## Requirements
 
-- [PHP][1] >= 5.5
-- [MySQL][2] >= 5.5
+- [PHP][1] >= 5.6
+- [MySQL][2] >= 5.6
 - [WP-CLI][3] >= 0.24
 - [Composer][4] >= 1.0
 
