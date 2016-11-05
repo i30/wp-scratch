@@ -33,7 +33,7 @@ Basically, you can separate static contents, databases, back-end and front-end i
 
 3. Follow instructions to finish the installation. It's easy!
 
-From now on, to add a new WordPress app, you just need fire the `install` script again.
+From now on, to add a new WordPress site, you just need fire the `install` script again.
 
 ## Important Notes
 
