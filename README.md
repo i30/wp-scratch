@@ -5,11 +5,11 @@
 [![Latest Unstable Version](https://poser.pugx.org/i30/wp-scratch/v/unstable)](https://packagist.org/packages/i30/wp-scratch)
 [![License](https://poser.pugx.org/i30/wp-scratch/license)](https://packagist.org/packages/i30/wp-scratch)
 
-A WordPress project from scratch.
+A scalable WordPress project from scratch. Easy to deploy!
 
-While working with WordPress, I feel unease to config virtual hosts, config a brand new WordPress installation, copy essential plugins for each new project again and again.
+While working with WordPress, i feel unease to config virtual hosts, set up brand new WordPress installations, copy essential plugins... for each new project again and again.
 
-Basically, you can separate static contents, databases, back-end and front-end into smaller servers. All of them use a same WordPress installation, this is really helpful in term of performance and maintainability. You can move your servers around or set up load balancing easily.
+With this, you can proxy static contents, databases, back-end and front-end into smaller servers. All of them use a same WordPress installation, it's really helpful in term of performance and maintainability. Moving your servers around or setting up load balancing becomes easier.
 
 ## Requirements
 
@@ -31,13 +31,13 @@ Basically, you can separate static contents, databases, back-end and front-end i
 
 3. Follow instructions to finish the installation. It's easy!
 
-From now on, to add a new WordPress site, you just need fire the `install` script again.
+From now on, to add a new WordPress site, you just need to fire the `install` script again.
 
 ## Important Notes
 
 - Since `$_SERVER['SERVER_NAME']` is used to determine which site will respond to requests, please make sure `SERVER_NAME` is configured properly. For Apache 2, remember to add `UseCanonicalName = On` in every virtual host.
 
-- While working with multiple sites (not WordPress multisite), you might need to separate `UPLOADS` directory. You can use this script as a must-use plugin:
+- While working with multiple sites (not WordPress multisite), you might need to separate `UPLOADS` directory. Use this script as a must-use plugin:
 
   ```php
   /**
@@ -51,9 +51,9 @@ From now on, to add a new WordPress site, you just need fire the `install` scrip
   add_filter('upload_dir', function($args)
   {
     $baseurl   = WP_HOME . '/uploads';
-    $basedir   = APP_ROOT . 'public/uploads';
+    $basedir   = APP_ROOT . 'app/uploads';
     $customurl = WP_HOME . '/' . DB_NAME . '-uploads';
-    $customdir = APP_ROOT . 'public/' . DB_NAME . '-uploads';
+    $customdir = APP_ROOT . 'app/' . DB_NAME . '-uploads';
 
     $args['url']     = str_replace($baseurl, $customurl, $args['url']);
     $args['path']    = str_replace($basedir, $customdir, $args['path']);
@@ -69,7 +69,7 @@ From now on, to add a new WordPress site, you just need fire the `install` scrip
 Contribution is always welcome!
 
 
-[1]: https://secure.php.net
+[1]: http://php.net
 [2]: http://dev.mysql.com/downloads/mysql/
 [3]: http://wp-cli.org
 [4]: https://getcomposer.org
