@@ -1,33 +1,34 @@
 {
-  "name": "i30/wp-scratch",
-  "description": "A WordPress project from scratch.",
-  "authors": [{
-    "name": "i30",
-    "email": "contact.dangvu@gmail.com"
-  }],
-  "license": "GPL-3.0",
-  "require": {
-	"php": ">=5.6",
-    "composer/installers": "^1.0",
-    "johnpbloch/wordpress": "^4.6"
-  },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://wpackagist.org"
+    "name": "i30/wp-scratch",
+    "description": "A scalable WordPress project from scratch. Easy to deploy!",
+    "authors": [{
+        "name": "i30",
+        "email": "minhtri.contact@gmail.com"
+    }],
+    "license": "GPL-3.0",
+    "require": {
+        "php": ">=5.6",
+        "composer/installers": "^1.0",
+        "johnpbloch/wordpress": "^4.7"
+    },
+    "repositories": [{
+        "type": "composer",
+        "url": "https://wpackagist.org"
+    }],
+    "extra": {
+        "wordpress-install-dir": "app/wp",
+        "installer-paths": {
+            "app/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
+            "app/plugins/{$name}/": ["type:wordpress-plugin"],
+            "app/themes/{$name}/": ["type:wordpress-theme"]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Console\\": "console/",
+            "Theme\\": "app/themes",
+            "Plugin\\": "app/plugins",
+            "MUPlugin\\": "app/mu-plugins"
+        }
     }
-  ],
-  "extra": {
-    "wordpress-install-dir": "public/wordpress",
-    "installer-paths": {
-      "public/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
-      "public/plugins/{$name}/": ["type:wordpress-plugin"],
-      "public/themes/{$name}/": ["type:wordpress-theme"]
-    }
-  },
-  "autoload": {
-    "psr-4": {
-      "Console\\": "console/"
-    }
-  }
 }
