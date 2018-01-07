@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /wordpress
+Disallow: /cache
+Disallow: /logs
+Disallow: /upgrade
+Disallow: /debug.log
+Disallow: /languages
