@@ -15,10 +15,10 @@ define('WP_DEBUG', false);
  *
  * @see  https://codex.wordpress.org/Editing_wp-config.php#Configure_Error_Logging
  */
-@ini_set('error_reporting', E_ALL);
-@ini_set('log_errors', 1);
-@ini_set('display_errors', '0');
-@ini_set('error_log', APP_ROOT . 'storage/' . $_SERVER['SERVER_NAME'] . '/logs/error.log');
+// @ini_set('error_reporting', E_ALL);
+// @ini_set('log_errors', 1);
+// @ini_set('display_errors', '0');
+// @ini_set('error_log', APP_ROOT . 'storage/' . $_SERVER['SERVER_NAME'] . '/logs/error.log');
 
 /**
  * Disable theme and plugin editor

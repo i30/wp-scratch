@@ -9,4 +9,4 @@ disabled_commands:
 # Alias to production site.
 # @prod:
 # 	ssh: user@example.com
-#	  path: /var/www/public/wordpress
+#	  path: /var/www/app/wordpress

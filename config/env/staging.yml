@@ -7,4 +7,4 @@ disabled_commands:
 # Alias to staging site.
 # @stag:
 # 	ssh: user@staging.example.com
-#	  path: /var/www/public/wordpress
+#	  path: /var/www/app/wordpress

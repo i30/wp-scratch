@@ -1,4 +1,4 @@
 # Alias to development site.
 # @dev:
 # 	ssh: user@dev.example.com
-#	  path: /var/www/public/wordpress
+#	  path: /var/www/app/wordpress
