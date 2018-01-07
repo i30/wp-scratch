@@ -3,11 +3,10 @@ cache
 vendor
 .vagrant
 .DS_Store
-public/*
+app/*
 node_modules
 config/*.php
 composer.lock
-!public/robots.txt
-!public/index.php
-!public/wp-config.php
-
+!app/robots.txt
+!app/index.php
+!app/wp-config.php
