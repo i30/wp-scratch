@@ -3,25 +3,23 @@
 # This simple script is to help you get started quickly.
 #
 
-# Update dependencies.
-read -p "Do you want to update dependencies? [y/n]" UPDATE_DEPPENDENCIES
-
-if [ "y" = "$UPDATE_DEPPENDENCIES" ]
+# Remove wp-content directory.
+if [ -d app/wp/wp-content ]
 then
-  composer update -o --prefer-dist
+  rm -rf app/wp/wp-content
 fi
 
-# Remove wp-content directory.
-if [ -d "public/wordpress/wp-content" ]
+# Remove default WordPress loader.
+if [ -f app/wp/index.php ]
 then
-  rm -rf public/wordpress/wp-content
+    echo "<?php // Silence is golden." > app/wp/index.php
 fi
 
 # Ready! Start installation.
 echo "Starting WordPress installation..."
 
 # Get server name.
-read -p "Server Name: " SERVER_NAME
+read -p "Server name: " SERVER_NAME
 
 # Get database name.
 read -p "Database name (DB_NAME): " DB_NAME
@@ -50,7 +48,7 @@ fi
 read -p "Database tables' prefix (\$table_prefix): " TABLE_PREFIX
 
 # Get MySQL server address.
-read -p "MySQL server address: " DB_HOST
+read -p "MySQL server address (DB_HOST): " DB_HOST
 if [ -z "$DB_HOST" ]
 then
   DB_HOST="127.0.0.1"
@@ -72,7 +70,8 @@ fi
 
 # Create database.
 echo "Connecting to the MySQL server..."
-mysql -h $DB_HOST -u $MYSQL_USER -p << SHELL
+echo "Creating MySQL user and database..."
+mysql -h $DB_HOST -u $MYSQL_USER -p <<SHELL
   create user '$DB_USER'@'$USER_HOST' identified by '$DB_PASSWORD';
   create database if not exists $DB_NAME;
   grant alter,create,delete,drop,index,lock tables,insert,select,update on $DB_NAME.* to '$DB_USER'@'$USER_HOST';
@@ -87,14 +86,14 @@ then
 fi
 
 # Database created.
-echo -e "\033[32mSuccess\033[0m: database has been created successfully!"
+echo -e "\033[32mSuccess\033[0m: Database has been created successfully!"
 
 # Get secret keys and salts.
 echo "Generating secret keys and salts..."
 SALTS=$(curl -s -S https://api.wordpress.org/secret-key/1.1/salt/)
 
 # Get environment.
-echo "Which environment will be used? [1/2/3]"
+echo "Which environment will be used to deploy? [1|2|3]"
 echo "1 - Staging"
 echo "2 - Production"
 echo "3 - Development"
@@ -106,16 +105,16 @@ case $OPTION in
 esac
 
 # Inherit environment configurations.
-if sed -i -E "s%^inherit:.*%inherit: config/envvars/$APP_ENV.yml%g" wp-cli.yml
+if sed -i -E "s%^inherit:.*%inherit: config/env/$APP_ENV.yml%g" wp-cli.yml
 then
-  echo -e "\033[32mSuccess\033[0m: $APP_ENV environment has been set successfully!"
+  echo -e "\033[32mSuccess\033[0m: $APP_ENV environment has been set up successfully!"
   rm -f wp-cli.yml-E
 else
-  echo -e "\033[33mNotice\033[0m: failed to set up environment!"
+  echo -e "\033[33mNotice\033[0m: Failed to set up $APP_ENV environment!"
 fi
 
 # Get domain name and home url.
-read -p "Homepage URL (WP_HOME): " HOME_URL
+read -p "Site address (with http protocol, WP_HOME): " HOME_URL
 WP_HOME=${HOME_URL%/}
 DOMAIN_NAME=$(echo $WP_HOME | awk -F/ '{print $3}')
 
@@ -213,12 +212,12 @@ $SALTS
  *
  * @var  resource
  */
-require APP_ROOT . 'config/envvars/$APP_ENV.php';
+require APP_ROOT . 'config/env/$APP_ENV.php';
 SETTINGS
 then
-  echo -e "\033[32mSuccess\033[0m: config file has been created successfully!"
+  echo -e "\033[32mSuccess\033[0m: Config file has been generated successfully!"
 else
-  echo -e "\033[31mError\033[0m: failed to create config file. Please make sure that config folder is writable!"
+  echo -e "\033[31mError\033[0m: Failed to generate config file. Please make sure that config folder is writable!"
   exit 1
 fi
 
@@ -237,7 +236,7 @@ echo ""; read -p "Admin email: " ADMIN_EMAIL
 # Do installation.
 if ! type "wp" >> /dev/null
 then
-  echo -e "\033[31mError\033[0m: wp-cli is not available. Please install wp-cli!"
+  echo -e "\033[31mError\033[0m: wp-cli is not installed. Please install wp-cli!"
   exit 1
 else
   wp core install --title="$SITE_TITLE" --admin_user="$ADMIN_USERNAME" --admin_password="$ADMIN_PWD" --admin_email="$ADMIN_EMAIL" --url="$WP_HOME" --skip-email
@@ -252,15 +251,15 @@ fi
 # Switch --url
 if sed -i -E "s%^url:.*%url: $DOMAIN_NAME%g" wp-cli.yml
 then
-  echo -e "\033[32mSuccess\033[0m: switched to $DOMAIN_NAME"
+  echo -e "\033[32mSuccess\033[0m: Switched to $DOMAIN_NAME"
   rm -f wp-cli.yml-E
 else
-  echo -e "\033[33mNotice\033[0m: failed to switch to $DOMAIN_NAME"
+  echo -e "\033[33mNotice\033[0m: Failed to switch to $DOMAIN_NAME"
 fi
 
 # Correct MySQL privileges after WordPress installed.
-echo -e "\033[33mNotice\033[0m: ALTER and DROP were granted for $DB_USER@$USER_HOST."
-read -p "Do you want to revoke those MySQL privileges now? [y/n]" REVOKE_OR_NOT
+echo -e "\033[33mNotice\033[0m: ALTER and DROP were granted for $DB_USER@$USER_HOST while installing WordPress."
+read -p "Revoke those MySQL privileges now? [y|n]" REVOKE_OR_NOT
 if [ "y" = "$REVOKE_OR_NOT" ]
 then
 echo "Connecting to the MySQL server again..."
@@ -272,4 +271,4 @@ SHELL
 fi
 
 # Done!
-echo -e "\033[32mDone!\033[0m You can now access admin dashboard at $WP_HOME/wordpress/wp-admin"
+echo -e "\033[32mDone!\033[0m Now, access admin dashboard at $WP_HOME/wp/wp-admin"
