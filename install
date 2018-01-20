@@ -82,6 +82,7 @@ SHELL
 # If there's MySQL failure.
 if [ $? -eq 1 ]
 then
+  echo -e "\033[31mWarning\033[0m: Failed to create MySQL database!"
   exit 1
 fi
 
