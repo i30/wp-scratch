@@ -245,6 +245,7 @@ fi
 # If failed to install WordPress.
 if [ $? -ge 1 ]
 then
+  echo -e "\033[31mError\033[0m: Failed to install WordPress!"
   exit 1
 fi
 
