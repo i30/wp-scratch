@@ -17,13 +17,6 @@ if ( !defined('ABSPATH') || !file_exists(APP_ROOT . 'config/' . $_SERVER['SERVER
 }
 
 /**
- * Load Composer autoloader
- *
- * @var  resource
- */
-require APP_ROOT . 'vendor/autoload.php';
-
-/**
  * Load configurations
  *
  * Prepare configurations which will be used for setting up WordPress application.
@@ -38,6 +31,7 @@ require APP_ROOT . 'config/' . $_SERVER['SERVER_NAME'] . '.php';
  * Here come extra commands which are handy for you.
  */
 if (defined('WP_CLI') && WP_CLI) {
+    require APP_ROOT . 'console/App.php';
     WP_CLI::add_command('app', 'Console\\App');
 }
 

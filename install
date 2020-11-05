@@ -261,7 +261,7 @@ fi
 
 # Correct MySQL privileges after WordPress installed.
 echo -e "\033[33mNotice\033[0m: ALTER and DROP were granted for $DB_USER@$USER_HOST while installing WordPress."
-read -p "Revoke those MySQL privileges now? [y|n]" REVOKE_OR_NOT
+read -p "Do you want to revoke those MySQL privileges now? [y|n]" REVOKE_OR_NOT
 if [ "y" = "$REVOKE_OR_NOT" ]
 then
 echo "Connecting to the MySQL server again..."
