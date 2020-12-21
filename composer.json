@@ -2,21 +2,21 @@
     "name": "i30/wp-scratch",
     "description": "A scalable WordPress project from scratch. Easy to deploy!",
     "authors": [{
-        "name": "i30",
-        "email": "minhtri.contact@gmail.com"
+        "name": "sarahcoding",
+        "email": "contact@sarahcoding.com"
     }],
     "license": "GPL-3.0",
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.2",
         "composer/installers": "^1.0",
-        "johnpbloch/wordpress": "^4.7"
+        "johnpbloch/wordpress": "^5.6"
     },
     "repositories": [{
         "type": "composer",
         "url": "https://wpackagist.org"
     }],
     "extra": {
-        "wordpress-install-dir": "app/wp",
+        "wordpress-install-dir": "app/cms",
         "installer-paths": {
             "app/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
             "app/plugins/{$name}/": ["type:wordpress-plugin"],

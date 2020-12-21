@@ -41,24 +41,24 @@ From now on, to add a new WordPress site, you just need to fire the `install` sc
 
   ```php
   /**
-   * Plugin Name: Custom Uploads Directory
+   * Plugin Name: Dynamic Uploads Directory
    * Version:     1.0.0
    * Description: Create custom uploads directory base on the DB_NAME constant.
-   * Author:      i30
-   * AUthor URI:  https://i30.github.io
+   * Author:      sarahcoding
+   * Author URI:  https://sarahcoding.com
    * License:     GPL v3+
    */
   add_filter('upload_dir', function($args)
   {
-    $baseurl   = WP_HOME . '/uploads';
-    $basedir   = APP_ROOT . 'app/uploads';
-    $customurl = WP_HOME . '/' . DB_NAME . '-uploads';
-    $customdir = APP_ROOT . 'app/' . DB_NAME . '-uploads';
+    $base_url = WP_HOME . '/uploads';
+    $base_dir = APP_ROOT . 'app/uploads';
+    $custom_url = WP_HOME . '/' . DB_NAME . '-uploads';
+    $custom_dir = APP_ROOT . 'app/' . DB_NAME . '-uploads';
 
-    $args['url']     = str_replace($baseurl, $customurl, $args['url']);
-    $args['path']    = str_replace($basedir, $customdir, $args['path']);
-    $args['baseurl'] = str_replace($baseurl, $customurl, $args['baseurl']);
-    $args['basedir'] = str_replace($basedir, $customdir, $args['basedir']);
+    $args['url'] = str_replace($base_url, $custom_url, $args['url']);
+    $args['path'] = str_replace($base_dir, $custom_dir, $args['path']);
+    $args['baseurl'] = str_replace($base_url, $custom_url, $args['baseurl']);
+    $args['basedir'] = str_replace($base_dir, $custom_dir, $args['basedir']);
 
     return $args;
   }, PHP_INT_MAX);

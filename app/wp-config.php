@@ -42,7 +42,7 @@ if (defined('WP_CLI') && WP_CLI) {
  *
  * @var  string
  */
-define('WP_SITEURL', WP_HOME . '/wp');
+define('WP_SITEURL', WP_HOME . '/cms');
 
 /**
  * Define content URL

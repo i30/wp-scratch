@@ -1,8 +1,8 @@
 # --path
-path: app/wp
+path: app/cms
 
 # --url
-url: wp-scratch.tld
+url: example.com
 
 # --inherit
 inherit: config/env/development.yml

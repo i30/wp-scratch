@@ -11,4 +11,4 @@ define('WP_USE_THEMES', true);
  *
  * @var  resource
  */
-require __DIR__ . '/wp/wp-blog-header.php';
+require __DIR__ . '/cms/wp-blog-header.php';

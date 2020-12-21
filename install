@@ -4,15 +4,15 @@
 #
 
 # Remove wp-content directory.
-if [ -d app/wp/wp-content ]
+if [ -d app/cms/wp-content ]
 then
-  rm -rf app/wp/wp-content
+  rm -rf app/cms/wp-content
 fi
 
 # Remove default WordPress loader.
-if [ -f app/wp/index.php ]
+if [ -f app/cms/index.php ]
 then
-    echo "<?php // Silence is golden." > app/wp/index.php
+    echo "<?php // Silence is golden." > app/cms/index.php
 fi
 
 # Ready! Start installation.
@@ -273,4 +273,4 @@ SHELL
 fi
 
 # Done!
-echo -e "\033[32mDone!\033[0m Now, access admin dashboard at $WP_HOME/wp/wp-admin"
+echo -e "\033[32mDone!\033[0m Now, access admin dashboard at $WP_HOME/cms/wp-admin"
